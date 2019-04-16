@@ -1,0 +1,161 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.examples</groupId>
+  <artifactId>kafka-learn</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <properties>
+      <confluent.version>5.2.1</confluent.version>
+      <avro.version>1.8.2</avro.version>
+    <scala.version>2.11.11</scala.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+
+  <repositories>
+    <repository>
+      <id>confluent</id>
+      <url>https://packages.confluent.io/maven/</url>
+    </repository>
+    <repository>
+      <id>scala-tools.org</id>
+      <name>Scala-Tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </repository>
+  </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+
+
+
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-streams</artifactId>
+      <version>2.1.1-cp1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>2.1.1-cp1</version>
+    </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/log4j/log4j -->
+      <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.17</version>
+      </dependency>
+      <dependency>
+          <groupId>io.confluent</groupId>
+          <artifactId>kafka-streams-avro-serde</artifactId>
+          <version>${confluent.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>io.confluent</groupId>
+          <artifactId>kafka-avro-serializer</artifactId>
+          <version>${confluent.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.avro</groupId>
+          <artifactId>avro</artifactId>
+          <version>${avro.version}</version>
+      </dependency>
+
+    <!-- For Scala developers -->
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-streams-scala_2.11</artifactId>
+      <!-- or
+      <artifactId>kafka-streams-scala_2.12</artifactId>
+      -->
+      <version>2.2.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <plugins>
+        <plugin>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <version>3.2.1</version>
+            <configuration>
+                <args>
+                    <!--
+                       In combination with Scala 2.11, `-Xexperimental` enables SAM
+                       for Java 8 lambda support.  Make sure `kafka.scala.version`
+                       is set to `2.11`, not `2.10`.
+                    -->
+                    <arg>-Xexperimental</arg>
+                    <!-- Emit warning and location for usages of features that should be imported explicitly. -->
+                    <arg>-feature</arg>
+                    <!-- Emit warning and location for usages of deprecated APIs. -->
+                    <arg>-deprecation</arg>
+                    <!-- Enable additional warnings where generated code depends on assumptions. -->
+                    <arg>-unchecked</arg>
+                    <!-- Enable recommended additional warnings. -->
+                    <arg>-Xlint</arg>
+                    <!-- Warn if an argument list is modified to match the receiver. -->
+                    <arg>-Ywarn-adapted-args</arg>
+                    <arg>-Ywarn-dead-code</arg>
+                    <!-- Fail on compiler warnings -->
+                    <!--TODO: enable this once we have warnings under control<arg>-Xfatal-warnings</arg>-->
+                </args>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>compile</goal>
+                        <goal>testCompile</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <buildcommands>
+            <buildcommand>ch.epfl.lamp.sdt.core.scalabuilder</buildcommand>
+          </buildcommands>
+          <additionalProjectnatures>
+            <projectnature>ch.epfl.lamp.sdt.core.scalanature</projectnature>
+          </additionalProjectnatures>
+          <classpathContainers>
+            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+            <classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
+          </classpathContainers>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <configuration>
+          <scalaVersion>${scala.version}</scalaVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

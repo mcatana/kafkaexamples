@@ -1,0 +1,10 @@
+{"namespace": "movielens",
+ "type": "record",
+ "name": "movie",
+ "fields": [
+     {"name": "movieid", "type": "string"},
+     {"name": "title", "type": "string"},
+     {"name": "genres", "type": "string"},
+     {"name": "year", "type": "long"}
+ ]
+}
